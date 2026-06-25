@@ -409,12 +409,7 @@ func scanSinglePort(ctx context.Context, host string, port int, addr string, ada
 		}
 	}
 
-	// 步骤2：记录开放端口
-	atomic.AddInt64(count, 1)
-	collector.Add(addr)
-	saveOpenPort(host, port)
-
-	// 步骤3：服务识别（Scanner负责关闭连接，包括探测中可能创建的新连接）
+	// 步骤2：服务识别（Scanner负责关闭连接，包括探测中可能创建的新连接）
 	scanner := NewSmartPortInfoScanner(ctx, host, port, conn, timeout, config, session)
 	// 服务探测超时自适应：用 RTT 采样值约束读超时上限
 	// 下限 500ms：服务处理需要时间，不能太激进
@@ -428,8 +423,14 @@ func scanSinglePort(ctx context.Context, host string, port int, addr string, ada
 	defer scanner.Close()
 	serviceInfo, _ := scanner.SmartIdentify()
 
-	// 步骤4：处理结果
+	// 步骤3：处理结果（先标记Web服务，再通知消费者，避免竞态）
 	processServiceResult(host, port, addr, serviceInfo, config, session)
+
+	// 步骤4：记录开放端口并通知消费者（必须在 processServiceResult 之后，
+	// 确保 MarkAsWebService 已完成，否则 web 插件消费时查不到标记）
+	atomic.AddInt64(count, 1)
+	collector.Add(addr)
+	saveOpenPort(host, port)
 }
 
 // handleConnectionFailure 处理连接失败
