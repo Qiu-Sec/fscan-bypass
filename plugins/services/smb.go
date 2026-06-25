@@ -148,7 +148,7 @@ func (p *SmbPlugin) testUnauthorizedAccess(ctx context.Context, info *common.Hos
 				output.WriteString(fmt.Sprintf("\n%s", share))
 			}
 
-			common.LogSuccess(output.String())
+			common.LogVuln(output.String())
 
 			return &ScanResult{
 				Success:  true,
