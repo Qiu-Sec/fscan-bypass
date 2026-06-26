@@ -1,6 +1,8 @@
 # TaskMgr 使用说明
 
-> ⚠️ **非官方版本** — 本项目是基于 [shadow1ng/fscan](https://github.com/shadow1ng/fscan) v2.1.3 的免杀改造分支（fork），由 [Qiu-Sec/fscan-bypass](https://github.com/Qiu-Sec/fscan-bypass) 维护。添加了终端特征清除、代码混淆、体积压缩，通杀火绒/Defender。功能与原版 fscan 一致，非官方发布。
+> ⚠️ 本项目是 [shadow1ng/fscan](https://github.com/shadow1ng/fscan) 的免杀改造 fork，非官方发布。
+
+基于 fscan v2.1.3 免杀改造版。预编译二进制下载见 [Releases](https://github.com/Qiu-Sec/fscan-bypass/releases)。
 
 ## 下载
 
@@ -11,7 +13,6 @@ Release 页面下载对应平台二进制：
 | Windows x64 | `taskmgr_v2.1.3_windows_x64.exe` |
 | Linux x64 | `taskmgr_v2.1.3_linux_x64` |
 | macOS x64 | `taskmgr_v2.1.3_mac_x64` |
-| macOS ARM64 | `taskmgr_v2.1.3_mac_arm64` |
 
 ## 免杀方案
 
