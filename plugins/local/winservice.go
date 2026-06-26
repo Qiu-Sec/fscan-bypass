@@ -10,9 +10,9 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/common/i18n"
-	"github.com/shadow1ng/fscan/plugins"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/common/i18n"
+	"taskmgr/netcheck/plugins"
 )
 
 // WinServicePlugin Windows服务持久化插件

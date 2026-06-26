@@ -3,7 +3,7 @@ package core
 import (
 	"testing"
 
-	"github.com/shadow1ng/fscan/common"
+	"taskmgr/netcheck/common"
 )
 
 // TestNewLocalScanStrategy 测试本地扫描策略构造函数

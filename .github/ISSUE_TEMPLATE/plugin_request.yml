@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        感谢您的插件请求！fscan 持续扩展对各种服务和协议的支持。
+        感谢您的插件请求！taskmgr 持续扩展对各种服务和协议的支持。
 
   - type: dropdown
     id: type

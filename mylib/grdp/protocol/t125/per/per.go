@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"io"
 
-	"github.com/shadow1ng/fscan/mylib/grdp/glog"
+	"taskmgr/netcheck/mylib/grdp/glog"
 
-	"github.com/shadow1ng/fscan/mylib/grdp/core"
+	"taskmgr/netcheck/mylib/grdp/core"
 )
 
 func ReadEnumerates(r io.Reader) (uint8, error) {

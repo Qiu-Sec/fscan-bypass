@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/shadow1ng/fscan/common"
+	"taskmgr/netcheck/common"
 )
 
 // TestNewAliveScanStrategy 测试构造函数

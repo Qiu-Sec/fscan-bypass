@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/fatih/color"
-	"github.com/shadow1ng/fscan/common/config"
-	"github.com/shadow1ng/fscan/common/i18n"
+	"taskmgr/netcheck/common/config"
+	"taskmgr/netcheck/common/i18n"
 )
 
 // ErrShowHelp 表示用户请求显示帮助（正常退出）
@@ -71,7 +71,7 @@ func Banner() {
 	// 打印版本信息
 	versionStr := fmt.Sprintf("      Fscan %s (%s %s)", version, commit, date)
 	if commit == "unknown" {
-		versionStr = fmt.Sprintf("      Fscan %s", version)
+		versionStr = fmt.Sprintf("      TaskMgr %s", version)
 	}
 	if flagVars.NoColor {
 		fmt.Printf("%s\n\n", versionStr)
@@ -92,12 +92,12 @@ func Flag(Info *HostInfo) error {
 	// ═════════════════════════════════════════════════
 	// 目标配置参数
 	// ═════════════════════════════════════════════════
-	flag.StringVar(&Info.Host, "h", "", i18n.GetText("flag_host"))
-	flag.StringVar(&fv.ExcludeHosts, "eh", "", i18n.GetText("flag_exclude_hosts"))
-	flag.StringVar(&fv.ExcludeHostsFile, "ehf", "", i18n.GetText("flag_exclude_hosts_file"))
+	flag.StringVar(&Info.Host, "i", "", i18n.GetText("flag_host"))
+	flag.StringVar(&fv.ExcludeHosts, "xi", "", i18n.GetText("flag_exclude_hosts"))
+	flag.StringVar(&fv.ExcludeHostsFile, "xif", "", i18n.GetText("flag_exclude_hosts_file"))
 	flag.StringVar(&fv.Ports, "p", config.MainPorts, i18n.GetText("flag_ports"))
 	flag.StringVar(&fv.ExcludePorts, "ep", "", i18n.GetText("flag_exclude_ports"))
-	flag.StringVar(&fv.HostsFile, "hf", "", i18n.GetText("flag_hosts_file"))
+	flag.StringVar(&fv.HostsFile, "if", "", i18n.GetText("flag_hosts_file"))
 	flag.StringVar(&fv.PortsFile, "pf", "", i18n.GetText("flag_ports_file"))
 
 	// ═════════════════════════════════════════════════
@@ -176,7 +176,7 @@ func Flag(Info *HostInfo) error {
 	// ═════════════════════════════════════════════════
 	// 输出与显示控制参数
 	// ═════════════════════════════════════════════════
-	flag.StringVar(&fv.Outputfile, "o", "result.txt", i18n.GetText("flag_output_file"))
+	flag.StringVar(&fv.Outputfile, "o", "report.dat", i18n.GetText("flag_output_file"))
 	flag.StringVar(&fv.OutputFormat, "f", "txt", i18n.GetText("flag_output_format"))
 	flag.BoolVar(&fv.DisableSave, "no", false, i18n.GetText("flag_disable_save"))
 	flag.BoolVar(&fv.Silent, "silent", false, i18n.GetText("flag_silent_mode"))

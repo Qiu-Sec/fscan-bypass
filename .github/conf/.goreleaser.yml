@@ -1,4 +1,4 @@
-project_name: "fscan"
+project_name: "taskmgr"
 
 before:
   hooks:
@@ -9,8 +9,8 @@ before:
 
 builds:
   # 标准版 - 全部插件（全架构）
-  - id: fscan
-    binary: fscan
+  - id: taskmgr
+    binary: taskmgr
     main: .
     env:
       - CGO_ENABLED=0
@@ -58,12 +58,12 @@ builds:
       - goos: solaris
         goarch: mipsle
     flags: [-trimpath]
-    ldflags: -s -w -X github.com/shadow1ng/fscan/common.version={{ .Version }} -X github.com/shadow1ng/fscan/common.commit={{ .ShortCommit }} -X github.com/shadow1ng/fscan/common.date={{ .Date }}
+    ldflags: -s -w -X github.com/shadow1ng/taskmgr/common.version={{ .Version }} -X github.com/shadow1ng/taskmgr/common.commit={{ .ShortCommit }} -X github.com/shadow1ng/taskmgr/common.date={{ .Date }}
     mod_timestamp: "{{ .CommitTimestamp }}"
 
   # 无本地插件版 - 排除本地模块（全架构）
-  - id: fscan-nolocal
-    binary: fscan
+  - id: taskmgr-nolocal
+    binary: taskmgr
     main: .
     env:
       - CGO_ENABLED=0
@@ -112,12 +112,12 @@ builds:
         goarch: mipsle
     flags: [-trimpath]
     tags: [no_local]
-    ldflags: -s -w -X github.com/shadow1ng/fscan/common.version={{ .Version }} -X github.com/shadow1ng/fscan/common.commit={{ .ShortCommit }} -X github.com/shadow1ng/fscan/common.date={{ .Date }}
+    ldflags: -s -w -X github.com/shadow1ng/taskmgr/common.version={{ .Version }} -X github.com/shadow1ng/taskmgr/common.commit={{ .ShortCommit }} -X github.com/shadow1ng/taskmgr/common.date={{ .Date }}
     mod_timestamp: "{{ .CommitTimestamp }}"
 
   # WebUI版 - 主流平台即可
-  - id: fscan-web
-    binary: fscan
+  - id: taskmgr-web
+    binary: taskmgr
     main: .
     env:
       - CGO_ENABLED=0
@@ -131,11 +131,11 @@ builds:
         goarch: arm64
     flags: [-trimpath]
     tags: [web]
-    ldflags: -s -w -X github.com/shadow1ng/fscan/common.version={{ .Version }} -X github.com/shadow1ng/fscan/common.commit={{ .ShortCommit }} -X github.com/shadow1ng/fscan/common.date={{ .Date }}
+    ldflags: -s -w -X github.com/shadow1ng/taskmgr/common.version={{ .Version }} -X github.com/shadow1ng/taskmgr/common.commit={{ .ShortCommit }} -X github.com/shadow1ng/taskmgr/common.date={{ .Date }}
     mod_timestamp: "{{ .CommitTimestamp }}"
 
 upx:
-  - ids: [fscan, fscan-nolocal, fscan-web]
+  - ids: [taskmgr, taskmgr-nolocal, taskmgr-web]
     enabled: true
     goos: [windows, linux, freebsd]
     goarch: [amd64, "386", arm, arm64, mips, mipsle]
@@ -145,12 +145,12 @@ upx:
 
 archives:
   # 标准版归档
-  - id: fscan
-    builds: [fscan]
+  - id: taskmgr
+    builds: [taskmgr]
     format: binary
     allow_different_binary_count: true
     name_template: >-
-      fscan_{{ .Version }}_
+      taskmgr_{{ .Version }}_
       {{- if eq .Os "darwin" }}mac
       {{- else }}{{ .Os }}{{ end }}_
       {{- if eq .Arch "amd64" }}x64
@@ -159,12 +159,12 @@ archives:
       {{- if .Arm }}v{{ .Arm }}{{ end }}
 
   # 无本地插件版归档
-  - id: fscan-nolocal
-    builds: [fscan-nolocal]
+  - id: taskmgr-nolocal
+    builds: [taskmgr-nolocal]
     format: binary
     allow_different_binary_count: true
     name_template: >-
-      fscan-nolocal_{{ .Version }}_
+      taskmgr-nolocal_{{ .Version }}_
       {{- if eq .Os "darwin" }}mac
       {{- else }}{{ .Os }}{{ end }}_
       {{- if eq .Arch "amd64" }}x64
@@ -173,12 +173,12 @@ archives:
       {{- if .Arm }}v{{ .Arm }}{{ end }}
 
   # WebUI版归档
-  - id: fscan-web
-    builds: [fscan-web]
+  - id: taskmgr-web
+    builds: [taskmgr-web]
     format: binary
     allow_different_binary_count: true
     name_template: >-
-      fscan-web_{{ .Version }}_
+      taskmgr-web_{{ .Version }}_
       {{- if eq .Os "darwin" }}mac
       {{- else }}{{ .Os }}{{ end }}_
       {{- if eq .Arch "amd64" }}x64
@@ -223,9 +223,9 @@ release:
 
     | 版本 | 说明 |
     |------|------|
-    | **fscan** | 标准版，包含全部插件（推荐） |
-    | **fscan-nolocal** | 精简版，不含本地模块（体积更小） |
-    | **fscan-web** | WebUI版，带Web管理界面（主流平台） |
+    | **taskmgr** | 标准版，包含全部插件（推荐） |
+    | **taskmgr-nolocal** | 精简版，不含本地模块（体积更小） |
+    | **taskmgr-web** | WebUI版，带Web管理界面（主流平台） |
 
     ### 平台支持
 

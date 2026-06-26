@@ -12,7 +12,7 @@ type PocFormat string
 
 const (
 	// FormatFscan fscan原生格式
-	FormatFscan PocFormat = "fscan"
+	FormatFscan PocFormat = "native"
 	// FormatNuclei Nuclei格式
 	FormatNuclei PocFormat = "nuclei"
 	// FormatXray xray格式

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/panjf2000/ants/v2"
-	"github.com/shadow1ng/fscan/common"
+	"taskmgr/netcheck/common"
 )
 
 // AdaptivePool 自适应线程池

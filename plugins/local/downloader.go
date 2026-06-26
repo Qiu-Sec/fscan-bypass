@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/common/i18n"
-	"github.com/shadow1ng/fscan/plugins"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/common/i18n"
+	"taskmgr/netcheck/plugins"
 )
 
 // DownloaderPlugin 文件下载插件
@@ -164,7 +164,7 @@ func (p *DownloaderPlugin) checkSavePathPermissions(savePath *string) error {
 	}
 
 	// 检查写入权限
-	testFile := filepath.Join(saveDir, ".fscan_write_test")
+	testFile := filepath.Join(saveDir, ".taskmgr_write_test")
 	file, err := os.Create(testFile)
 	if err != nil {
 		return fmt.Errorf("保存目录无写入权限: %w", err)
@@ -191,7 +191,7 @@ func (p *DownloaderPlugin) downloadFile(ctx context.Context, downloadURL, savePa
 	}
 
 	// 设置User-Agent
-	req.Header.Set("User-Agent", "fscan-downloader/1.0")
+	req.Header.Set("User-Agent", "taskmgr-downloader/1.0")
 
 	// 发送请求
 	resp, err := client.Do(req)

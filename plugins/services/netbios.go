@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/plugins"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/plugins"
 )
 
 // NetBIOSPlugin NetBIOS名称服务扫描插件 - 收集Windows主机名和域信息

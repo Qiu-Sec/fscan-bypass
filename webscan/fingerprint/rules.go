@@ -3,7 +3,7 @@ package fingerprint
 import (
 	"regexp"
 
-	"github.com/shadow1ng/fscan/common"
+	"taskmgr/netcheck/common"
 )
 
 // RuleData 指纹识别规则数据

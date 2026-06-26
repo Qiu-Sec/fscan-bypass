@@ -6,12 +6,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/shadow1ng/fscan/mylib/grdp/glog"
+	"taskmgr/netcheck/mylib/grdp/glog"
 
 	"github.com/lunixbochs/struc"
-	"github.com/shadow1ng/fscan/mylib/grdp/core"
-	"github.com/shadow1ng/fscan/mylib/grdp/emission"
-	"github.com/shadow1ng/fscan/mylib/grdp/protocol/tpkt"
+	"taskmgr/netcheck/mylib/grdp/core"
+	"taskmgr/netcheck/mylib/grdp/emission"
+	"taskmgr/netcheck/mylib/grdp/protocol/tpkt"
 )
 
 // take idea from https://github.com/Madnikulin50/gordp

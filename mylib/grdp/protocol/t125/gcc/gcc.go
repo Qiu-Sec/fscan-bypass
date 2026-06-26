@@ -12,11 +12,11 @@ import (
 	"math/big"
 	"os"
 
-	"github.com/shadow1ng/fscan/mylib/grdp/glog"
+	"taskmgr/netcheck/mylib/grdp/glog"
 
 	"github.com/lunixbochs/struc"
-	"github.com/shadow1ng/fscan/mylib/grdp/core"
-	"github.com/shadow1ng/fscan/mylib/grdp/protocol/t125/per"
+	"taskmgr/netcheck/mylib/grdp/core"
+	"taskmgr/netcheck/mylib/grdp/protocol/t125/per"
 )
 
 var t124_02_98_oid = []byte{0, 0, 20, 124, 0, 1}

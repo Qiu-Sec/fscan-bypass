@@ -3,8 +3,8 @@ package web
 import (
 	"context"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/plugins"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/plugins"
 )
 
 // WebPlugin Web插件接口 - 使用智能HTTP检测，不需要预定义端口

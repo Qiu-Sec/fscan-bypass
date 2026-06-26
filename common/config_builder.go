@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/shadow1ng/fscan/common/config"
-	"github.com/shadow1ng/fscan/common/parsers"
+	"taskmgr/netcheck/common/config"
+	"taskmgr/netcheck/common/parsers"
 )
 
 /*

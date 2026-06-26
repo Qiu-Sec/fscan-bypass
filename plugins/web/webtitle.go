@@ -12,12 +12,12 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/core"
-	"github.com/shadow1ng/fscan/plugins"
-	WebScan "github.com/shadow1ng/fscan/webscan"
-	"github.com/shadow1ng/fscan/webscan/fingerprint"
-	"github.com/shadow1ng/fscan/webscan/lib"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/core"
+	"taskmgr/netcheck/plugins"
+	WebScan "taskmgr/netcheck/webscan"
+	"taskmgr/netcheck/webscan/fingerprint"
+	"taskmgr/netcheck/webscan/lib"
 )
 
 // 预编译正则表达式

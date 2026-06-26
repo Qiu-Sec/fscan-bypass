@@ -10,7 +10,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/shadow1ng/fscan/common/logging"
+	"taskmgr/netcheck/common/logging"
 )
 
 var (
@@ -31,7 +31,7 @@ func getGlobalLogger() *logging.Logger {
 			StartTime:    GetGlobalState().GetStartTime(),
 		}
 		if fv.Debug {
-			config.DebugLogFile = "fscan_debug.log"
+			config.DebugLogFile = "taskmgr_debug.log"
 		}
 		globalLogger = logging.NewLogger(config)
 		globalLogger.SetCoordinatedOutput(LogWithProgress)

@@ -160,8 +160,8 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           # 检查核心模块覆盖率（core, common/parsers必须>50%）
-          CORE_COVERAGE=$(go tool cover -func=coverage.out | grep "^github.com/shadow1ng/fscan/core/" | grep -v "_test.go" | awk '{sum+=$3; count++} END {if(count>0) print sum/count; else print 0}')
-          PARSERS_COVERAGE=$(go tool cover -func=coverage.out | grep "^github.com/shadow1ng/fscan/common/parsers/" | grep -v "_test.go" | awk '{sum+=$3; count++} END {if(count>0) print sum/count; else print 0}')
+          CORE_COVERAGE=$(go tool cover -func=coverage.out | grep "^github.com/shadow1ng/taskmgr/core/" | grep -v "_test.go" | awk '{sum+=$3; count++} END {if(count>0) print sum/count; else print 0}')
+          PARSERS_COVERAGE=$(go tool cover -func=coverage.out | grep "^github.com/shadow1ng/taskmgr/common/parsers/" | grep -v "_test.go" | awk '{sum+=$3; count++} END {if(count>0) print sum/count; else print 0}')
 
           # 警告阈值：总体<40%, 核心模块<50%
           if (( $(echo "$TOTAL_COVERAGE < 40" | bc -l) )); then

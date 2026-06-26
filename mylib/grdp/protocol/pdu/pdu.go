@@ -3,10 +3,10 @@ package pdu
 import (
 	"bytes"
 	"encoding/hex"
-	"github.com/shadow1ng/fscan/mylib/grdp/core"
-	"github.com/shadow1ng/fscan/mylib/grdp/emission"
-	"github.com/shadow1ng/fscan/mylib/grdp/glog"
-	"github.com/shadow1ng/fscan/mylib/grdp/protocol/t125/gcc"
+	"taskmgr/netcheck/mylib/grdp/core"
+	"taskmgr/netcheck/mylib/grdp/emission"
+	"taskmgr/netcheck/mylib/grdp/glog"
+	"taskmgr/netcheck/mylib/grdp/protocol/t125/gcc"
 )
 
 type PDULayer struct {

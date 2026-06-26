@@ -238,7 +238,7 @@ func (h *ResultHandler) Export(w http.ResponseWriter, r *http.Request) {
 	switch format {
 	case "json":
 		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Content-Disposition", "attachment; filename=fscan_results.json")
+		w.Header().Set("Content-Disposition", "attachment; filename=taskmgr_results.json")
 
 		output := ExportOutput{
 			ScanTime: time.Now(),
@@ -257,7 +257,7 @@ func (h *ResultHandler) Export(w http.ResponseWriter, r *http.Request) {
 
 	case "csv":
 		w.Header().Set("Content-Type", "text/csv")
-		w.Header().Set("Content-Disposition", "attachment; filename=fscan_results.csv")
+		w.Header().Set("Content-Disposition", "attachment; filename=taskmgr_results.csv")
 		writer := csv.NewWriter(w)
 
 		// Hosts section

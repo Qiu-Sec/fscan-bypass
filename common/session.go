@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/shadow1ng/fscan/common/proxy"
+	"taskmgr/netcheck/common/proxy"
 )
 
 // ScanSession 封装单次扫描的全部上下文

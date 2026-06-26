@@ -20,7 +20,7 @@ rules:
     expression: |
       response.status == 200 && response.body.bcontains(b"success")
 detail:
-  author: fscan-dev
+  author: taskmgr-dev
   description: fscan原生格式示例
 `
 

@@ -7,9 +7,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/common/i18n"
-	"github.com/shadow1ng/fscan/common/parsers"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/common/i18n"
+	"taskmgr/netcheck/common/parsers"
 )
 
 // ServiceScanStrategy 服务扫描策略

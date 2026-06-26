@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/common/proxy"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/common/proxy"
 	"gopkg.in/yaml.v2"
 )
 

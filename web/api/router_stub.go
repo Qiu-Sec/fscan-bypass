@@ -5,7 +5,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/shadow1ng/fscan/web/ws"
+	"taskmgr/netcheck/web/ws"
 )
 
 // RegisterRoutes 非Web版本的空实现

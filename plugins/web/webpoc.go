@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/plugins"
-	WebScan "github.com/shadow1ng/fscan/webscan"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/plugins"
+	WebScan "taskmgr/netcheck/webscan"
 )
 
 // CDN/WAF指纹列表，检测到这些指纹时跳过漏洞扫描

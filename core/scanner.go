@@ -10,11 +10,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/common/i18n"
-	"github.com/shadow1ng/fscan/common/output"
-	"github.com/shadow1ng/fscan/plugins"
-	"github.com/shadow1ng/fscan/webscan/lib"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/common/i18n"
+	"taskmgr/netcheck/common/output"
+	"taskmgr/netcheck/plugins"
+	"taskmgr/netcheck/webscan/lib"
 )
 
 // ScanStrategy 定义扫描策略接口

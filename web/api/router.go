@@ -5,7 +5,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/shadow1ng/fscan/web/ws"
+	"taskmgr/netcheck/web/ws"
 )
 
 // RegisterRoutes 注册所有API路由

@@ -3,8 +3,8 @@ package plugins
 import (
 	"testing"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/common/config"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/common/config"
 )
 
 /*

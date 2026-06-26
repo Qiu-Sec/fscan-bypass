@@ -57,7 +57,7 @@ body:
       label: 复现步骤
       description: 提供可以复现问题的命令或步骤
       placeholder: |
-        1. 执行命令: fscan -h xxx -p xxx
+        1. 执行命令: taskmgr -h xxx -p xxx
         2. 观察到...
       render: shell
     validations:
@@ -73,7 +73,7 @@ body:
   - type: dropdown
     id: version
     attributes:
-      label: fscan 版本
+      label: taskmgr 版本
       options:
         - 2.1.0
         - 2.0.1

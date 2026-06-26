@@ -1,4 +1,4 @@
-# fscan English translation file
+# taskmgr English translation file
 # Contains only actually used messages (115)
 
 # ========================= Command Line Arguments (71) =========================
@@ -31,7 +31,7 @@ flag_disable_ping:
 flag_disable_tcp_probe:
   other: "Disable TCP supplementary probe"
 flag_debug:
-  other: "Enable debug mode, write logs to fscan_debug.log"
+  other: "Enable debug mode, write logs to taskmgr_debug.log"
 flag_alive_only:
   other: "Alive detection only"
 flag_username:

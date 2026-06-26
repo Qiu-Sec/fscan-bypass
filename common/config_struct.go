@@ -3,7 +3,7 @@ package common
 import (
 	"time"
 
-	"github.com/shadow1ng/fscan/common/config"
+	"taskmgr/netcheck/common/config"
 )
 
 /*

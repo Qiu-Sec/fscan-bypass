@@ -13,10 +13,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/common/config"
-	"github.com/shadow1ng/fscan/common/i18n"
-	"github.com/shadow1ng/fscan/webscan/lib"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/common/config"
+	"taskmgr/netcheck/common/i18n"
+	"taskmgr/netcheck/webscan/lib"
 )
 
 // 常量定义

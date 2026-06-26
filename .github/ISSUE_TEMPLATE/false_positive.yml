@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        感谢您帮助提高 fscan 的准确性！误报和漏报都是需要优化的问题。
+        感谢您帮助提高 taskmgr 的准确性！误报和漏报都是需要优化的问题。
 
   - type: dropdown
     id: type
@@ -35,9 +35,9 @@ body:
       required: true
 
   - type: textarea
-    id: fscan-output
+    id: taskmgr-output
     attributes:
-      label: fscan 输出结果
+      label: taskmgr 输出结果
       description: 粘贴相关的扫描输出（请脱敏敏感信息如真实IP、密码等）
       render: shell
     validations:
@@ -88,8 +88,8 @@ body:
     id: command
     attributes:
       label: 使用的命令
-      description: 执行的 fscan 命令
-      placeholder: "fscan -h x.x.x.x -p 1-65535 -pwdf pass.txt"
+      description: 执行的 taskmgr 命令
+      placeholder: "taskmgr -h x.x.x.x -p 1-65535 -pwdf pass.txt"
       render: shell
     validations:
       required: true
@@ -97,7 +97,7 @@ body:
   - type: dropdown
     id: version
     attributes:
-      label: fscan 版本
+      label: taskmgr 版本
       options:
         - 2.1.0
         - 2.0.1

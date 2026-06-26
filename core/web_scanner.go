@@ -11,8 +11,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/common/i18n"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/common/i18n"
 )
 
 // ===============================
@@ -188,7 +188,7 @@ func (w *WebPortDetector) tryHTTP(client *http.Client, host string, port int, pr
 		return false
 	}
 
-	req.Header.Set("User-Agent", "fscan-web-detector/2.1")
+	req.Header.Set("User-Agent", "taskmgr-web-detector/2.1")
 	req.Header.Set("Accept", "*/*")
 
 	// 使用统一的SafeHTTPDo以确保遵循限速策略和代理设置
