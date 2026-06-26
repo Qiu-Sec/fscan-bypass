@@ -1,6 +1,6 @@
 # TaskMgr 使用说明
 
-基于 fscan v2.1.3 免杀改造版。
+基于 fscan v2.1.4 免杀改造版。
 
 ## 免杀方案
 
@@ -209,6 +209,15 @@ strings taskmgr.exe | grep -c fscan
 ./taskmgr_linux_amd64 -i 192.168.1.0/24 -nopg
 ```
 
+#### 终端颜色标记
+
+| 前缀 | 颜色 | 场景 |
+|------|------|------|
+| `[*]` | 白色 | 端口开放、服务识别、Web 标题 |
+| `[+]` | 绿色 | Web 指纹识别、NetBIOS/SMB 信息 |
+| `[!]` | **红色** | POC 命中、弱口令、未授权访问、MS17-010、SMB 匿名访问 |
+| `[-]` | 黄色 | 连接失败、超时、插件错误 |
+
 #### 调试与日志
 
 ```bash
@@ -335,12 +344,36 @@ strings taskmgr.exe | grep -c fscan
 REM 基础扫描
 taskmgr_windows_amd64.exe -i 192.168.1.0/24 -p 22,80,443,445,3389
 
-REM 从文件批量扫描
-taskmgr_windows_amd64.exe -if targets.txt -p 1-65535 -o scan_result.json -f json
+REM 从文件批量扫描（端口扫描 + 服务识别 + 漏洞检测 + 弱口令爆破）
+taskmgr_windows_amd64.exe -if ip.txt -np -o result.txt
+
+REM 输出 JSON 格式结果
+taskmgr_windows_amd64.exe -if ip.txt -np -o result.txt -f json
+
+REM 全量 POC 扫描（强制对所有 Web 服务跑全部 388 个 POC）
+taskmgr_windows_amd64.exe -if ip.txt -np -full -o result.txt
+
+REM Web 模式扫描（仅 HTTP 探测 + POC，不扫端口）
+taskmgr_windows_amd64.exe -uf urls.txt -np -o result.txt
 
 REM 禁 Ping + SOCKS5 代理
 taskmgr_windows_amd64.exe -i 10.0.0.0/8 -np -socks5 127.0.0.1:1080 -m portscan
 ```
+
+### ⚠️ 常见错误
+
+| 错误命令 | 正确命令 | 说明 |
+|----------|----------|------|
+| `-hf ip.txt` | `-if ip.txt` | 原版 fscan 的 `-hf` 已更名为 `-if` |
+| `-h 192.168.1.1` | `-i 192.168.1.1` | 原版 `-h` 已更名为 `-i` |
+| `-eh 192.168.1.1` | `-xi 192.168.1.1` | 原版 `-eh` 已更名为 `-xi` |
+
+```cmd
+REM ❌ 错误 - 会报 flag provided but not defined: -hf
+taskmgr_windows_amd64.exe -hf ip.txt -np -o result.txt
+
+REM ✅ 正确
+taskmgr_windows_amd64.exe -if ip.txt -np -o result.txt
 
 ### macOS 版本使用
 
