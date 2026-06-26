@@ -8,7 +8,7 @@ Release 页面下载对应平台二进制：
 
 | 平台 | 文件名 |
 |------|--------|
-| Windows x64 | `taskmgr_v2.1.3_windows_x64.exe` |
+| Windows x64 | `taskmgr_v2.1.3_windows_x64` |
 | Linux x64 | `taskmgr_v2.1.3_linux_x64` |
 | macOS x64 | `taskmgr_v2.1.3_mac_x64` |
 | macOS ARM64 | `taskmgr_v2.1.3_mac_arm64` |
@@ -60,7 +60,7 @@ upx -9 -o output_upx.exe output.exe
 ### 4. 效果验证
 
 ```bash
-strings taskmgr_v2.1.3_windows_x64.exe | grep -c fscan
+strings taskmgr_v2.1.3_windows_x64 | grep -c fscan
 # 输出：0（除 Go 运行时内部标识 _GCoffscanObject 外无 fscan 特征）
 ```
 
@@ -353,22 +353,22 @@ strings taskmgr_v2.1.3_windows_x64.exe | grep -c fscan
 
 ```cmd
 REM 基础扫描
-taskmgr_v2.1.3_windows_x64.exe -i 192.168.1.0/24 -p 22,80,443,445,3389
+taskmgr_v2.1.3_windows_x64 -i 192.168.1.0/24 -p 22,80,443,445,3389
 
 REM 从文件批量扫描（端口扫描 + 服务识别 + 漏洞检测 + 弱口令爆破）
-taskmgr_v2.1.3_windows_x64.exe -if ip.txt -np -o result.txt
+taskmgr_v2.1.3_windows_x64 -if ip.txt -np -o result.txt
 
 REM 输出 JSON 格式结果
-taskmgr_v2.1.3_windows_x64.exe -if ip.txt -np -o result.txt -f json
+taskmgr_v2.1.3_windows_x64 -if ip.txt -np -o result.txt -f json
 
 REM 全量 POC 扫描（强制对所有 Web 服务跑全部 388 个 POC）
-taskmgr_v2.1.3_windows_x64.exe -if ip.txt -np -full -o result.txt
+taskmgr_v2.1.3_windows_x64 -if ip.txt -np -full -o result.txt
 
 REM Web 模式扫描（仅 HTTP 探测 + POC，不扫端口）
-taskmgr_v2.1.3_windows_x64.exe -uf urls.txt -np -o result.txt
+taskmgr_v2.1.3_windows_x64 -uf urls.txt -np -o result.txt
 
 REM 禁 Ping + SOCKS5 代理
-taskmgr_v2.1.3_windows_x64.exe -i 10.0.0.0/8 -np -socks5 127.0.0.1:1080 -m portscan
+taskmgr_v2.1.3_windows_x64 -i 10.0.0.0/8 -np -socks5 127.0.0.1:1080 -m portscan
 ```
 
 ### ⚠️ 常见错误
@@ -381,10 +381,10 @@ taskmgr_v2.1.3_windows_x64.exe -i 10.0.0.0/8 -np -socks5 127.0.0.1:1080 -m ports
 
 ```cmd
 REM ❌ 错误 - 会报 flag provided but not defined: -hf
-taskmgr_v2.1.3_windows_x64.exe -hf ip.txt -np -o result.txt
+taskmgr_v2.1.3_windows_x64 -hf ip.txt -np -o result.txt
 
 REM ✅ 正确
-taskmgr_v2.1.3_windows_x64.exe -if ip.txt -np -o result.txt
+taskmgr_v2.1.3_windows_x64 -if ip.txt -np -o result.txt
 
 ### macOS 版本使用
 
@@ -605,7 +605,7 @@ strings taskmgr_v2.1.3_linux_x64_upx | grep -c fscan
 GOOS=linux GOARCH=amd64 garble -tiny -seed=random build -ldflags="-w -s" -trimpath -o taskmgr_v2.1.3_linux_x64 main.go
 
 # Windows x64
-GOOS=windows GOARCH=amd64 garble -tiny -seed=random build -ldflags="-w -s" -trimpath -o taskmgr_v2.1.3_windows_x64.exe main.go
+GOOS=windows GOARCH=amd64 garble -tiny -seed=random build -ldflags="-w -s" -trimpath -o taskmgr_v2.1.3_windows_x64 main.go
 
 # Windows x32
 GOOS=windows GOARCH=386 garble -tiny -seed=random build -ldflags="-w -s" -trimpath -o taskmgr_v2.1.3_windows_386.exe main.go
