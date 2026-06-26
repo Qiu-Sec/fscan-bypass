@@ -3,8 +3,8 @@ package services
 import (
 	"context"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/plugins"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/plugins"
 )
 
 // 插件接口定义 - 统一命名风格

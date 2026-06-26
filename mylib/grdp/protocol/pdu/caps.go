@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/shadow1ng/fscan/mylib/grdp/glog"
+	"taskmgr/netcheck/mylib/grdp/glog"
 
 	"github.com/lunixbochs/struc"
-	"github.com/shadow1ng/fscan/mylib/grdp/core"
-	"github.com/shadow1ng/fscan/mylib/grdp/protocol/t125/gcc"
+	"taskmgr/netcheck/mylib/grdp/core"
+	"taskmgr/netcheck/mylib/grdp/protocol/t125/gcc"
 )
 
 type CapsType uint16

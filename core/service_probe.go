@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/core/portfinger"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/core/portfinger"
 )
 
 // 默认超时时间常量

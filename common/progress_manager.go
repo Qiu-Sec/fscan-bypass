@@ -11,7 +11,7 @@ import (
 
 	"golang.org/x/term"
 
-	"github.com/shadow1ng/fscan/common/i18n"
+	"taskmgr/netcheck/common/i18n"
 )
 
 // 默认终端宽度

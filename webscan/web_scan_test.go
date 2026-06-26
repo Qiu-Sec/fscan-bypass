@@ -3,8 +3,8 @@ package WebScan
 import (
 	"testing"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/webscan/lib"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/webscan/lib"
 )
 
 func TestBuildTargetURL(t *testing.T) {

@@ -3,7 +3,7 @@ package lic
 import (
 	"io"
 
-	"github.com/shadow1ng/fscan/mylib/grdp/core"
+	"taskmgr/netcheck/mylib/grdp/core"
 )
 
 const (

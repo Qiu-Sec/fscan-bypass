@@ -18,7 +18,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/shadow1ng/fscan/common"
+	"taskmgr/netcheck/common"
 )
 
 // =============================================================================

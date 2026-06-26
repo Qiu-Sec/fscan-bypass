@@ -6,8 +6,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/plugins"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/plugins"
 )
 
 /*

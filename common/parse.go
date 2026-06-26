@@ -1,7 +1,7 @@
 package common
 
 import (
-	"github.com/shadow1ng/fscan/common/logging"
+	"taskmgr/netcheck/common/logging"
 )
 
 // logLevelMap 日志级别字符串到级别的映射

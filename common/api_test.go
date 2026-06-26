@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/shadow1ng/fscan/common/logging"
-	"github.com/shadow1ng/fscan/common/proxy"
+	"taskmgr/netcheck/common/logging"
+	"taskmgr/netcheck/common/proxy"
 )
 
 func TestGetLogLevelFromString(t *testing.T) {

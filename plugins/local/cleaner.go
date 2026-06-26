@@ -10,9 +10,9 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/common/i18n"
-	"github.com/shadow1ng/fscan/plugins"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/common/i18n"
+	"taskmgr/netcheck/plugins"
 )
 
 // CleanerPlugin 痕迹清理插件
@@ -150,7 +150,7 @@ func (p *CleanerPlugin) findLogFiles(dir string) []string {
 // isScanRelatedLog 判断是否为扫描相关日志
 func (p *CleanerPlugin) isScanRelatedLog(filename string) bool {
 	scanKeywords := []string{
-		"scan", "fscan", "vulnerability", "result", "report",
+		"scan", "native", "vulnerability", "result", "report",
 		"exploit", "brute", "port", "service", "web",
 	}
 

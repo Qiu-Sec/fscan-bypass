@@ -1,5 +1,5 @@
 name: '构建和发布'
-description: 'fscan 可复用构建动作'
+description: 'taskmgr 可复用构建动作'
 
 inputs:
   mode:
@@ -83,7 +83,7 @@ runs:
 
         ## 构建产物
 
-        ### fscan (Go 版本)
+        ### taskmgr (Go 版本)
         $(if [ -d "dist" ]; then
           echo "- 文件数: $(find dist -type f 2>/dev/null | wc -l)"
           echo "- 大小: $(du -sh dist 2>/dev/null | cut -f1)"
@@ -91,7 +91,7 @@ runs:
           echo "- 无产物"
         fi)
 
-        ### fscan-lite (C 版本)
+        ### taskmgr-lite (C 版本)
         $(if [ -d "dist-lite" ]; then
           echo "- 文件数: $(find dist-lite -type f 2>/dev/null | wc -l)"
           echo "- 大小: $(du -sh dist-lite 2>/dev/null | cut -f1)"

@@ -1,4 +1,4 @@
-// perftest - fscan 可扩展性测试工具
+// perftest - taskmgr 可扩展性测试工具
 // 测量不同线程数下的扫描性能，生成 CSV 数据用于绘图
 package main
 
@@ -37,7 +37,7 @@ func main() {
 	threadList := parseIntList(*threads)
 	results := []Result{}
 
-	fmt.Printf("=== fscan 可扩展性测试 ===\n")
+	fmt.Printf("=== taskmgr 可扩展性测试 ===\n")
 	fmt.Printf("目标: %s\n", *target)
 	fmt.Printf("端口: %s\n", *ports)
 	fmt.Printf("线程数: %v\n", threadList)
@@ -81,7 +81,7 @@ func runFscan(target, ports string, threads int) (duration float64, rate float64
 	}
 
 	start := time.Now()
-	cmd := exec.Command("./fscan", args...)
+	cmd := exec.Command("./taskmgr", args...)
 	output, _ := cmd.CombinedOutput()
 	duration = time.Since(start).Seconds()
 
@@ -154,7 +154,7 @@ func printPlotCommand(csvFile string) {
 	fmt.Printf(`gnuplot -e "
 set terminal png size 800,600;
 set output 'scalability.png';
-set title 'fscan Scalability';
+set title 'taskmgr Scalability';
 set xlabel 'Threads';
 set ylabel 'Ports/sec';
 set grid;
@@ -171,7 +171,7 @@ plt.figure(figsize=(10,6))
 plt.plot(df['threads'], df['ports_per_sec'], 'o-', linewidth=2, markersize=8)
 plt.xlabel('Threads')
 plt.ylabel('Ports/sec')
-plt.title('fscan Scalability Chart')
+plt.title('taskmgr Scalability Chart')
 plt.grid(True)
 plt.savefig('scalability.png', dpi=150)
 print('已保存: scalability.png')

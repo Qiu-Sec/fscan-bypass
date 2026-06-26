@@ -1,4 +1,4 @@
-module github.com/shadow1ng/fscan
+module taskmgr/netcheck
 
 go 1.20
 

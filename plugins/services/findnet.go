@@ -14,8 +14,8 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/plugins"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/plugins"
 )
 
 // 预编译正则表达式

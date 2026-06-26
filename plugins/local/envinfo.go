@@ -8,9 +8,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/common/i18n"
-	"github.com/shadow1ng/fscan/plugins"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/common/i18n"
+	"taskmgr/netcheck/plugins"
 )
 
 // EnvInfoPlugin 环境变量信息收集插件

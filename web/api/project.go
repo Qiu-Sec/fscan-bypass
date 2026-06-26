@@ -36,7 +36,7 @@ var globalProjectStore *ProjectStore
 
 func init() {
 	home, _ := os.UserHomeDir()
-	dir := filepath.Join(home, ".fscan", "projects")
+	dir := filepath.Join(home, ".taskmgr", "projects")
 	globalProjectStore = &ProjectStore{
 		projects: make(map[string]*ProjectCache),
 		dir:      dir,

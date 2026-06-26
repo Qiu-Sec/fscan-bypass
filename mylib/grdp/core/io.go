@@ -2,7 +2,7 @@ package core
 
 import (
 	"encoding/binary"
-	"github.com/shadow1ng/fscan/mylib/grdp/glog"
+	"taskmgr/netcheck/mylib/grdp/glog"
 	"io"
 )
 

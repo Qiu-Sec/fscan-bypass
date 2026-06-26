@@ -10,9 +10,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/shadow1ng/fscan/common"
-	"github.com/shadow1ng/fscan/core"
-	"github.com/shadow1ng/fscan/web/ws"
+	"taskmgr/netcheck/common"
+	"taskmgr/netcheck/core"
+	"taskmgr/netcheck/web/ws"
 )
 
 // ScanState 扫描状态

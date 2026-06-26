@@ -5,7 +5,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/shadow1ng/fscan/common"
+	"taskmgr/netcheck/common"
 )
 
 // Plugin 统一插件接口

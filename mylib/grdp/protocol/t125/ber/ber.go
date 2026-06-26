@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/shadow1ng/fscan/mylib/grdp/core"
+	"taskmgr/netcheck/mylib/grdp/core"
 )
 
 const (
